@@ -1,0 +1,12 @@
+.TableCustom{
+    font-size: 12px;
+}
+
+.TableCustom th{
+    font-weight: bold;
+    padding: 5px 6px;
+}
+
+.TableCustom td{
+    padding: 4px 5px
+}

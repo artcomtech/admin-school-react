@@ -1,0 +1,54 @@
+.content-header{
+    padding: 10px 0.5rem;
+}
+
+h3{
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+.breadcrumb{
+    font-size: 13px; 
+}
+
+.pagination{
+    font-size: 12px; 
+    margin-top: 10px;
+}
+
+ul .pagination{
+    margin-bottom: 0px;
+}
+
+.card-body{
+    padding-bottom: 5px;
+    padding-top: 7px;
+}
+
+.page-link{
+    color: #009999;
+}
+
+.btn-primary {
+
+    background-color: #009999;
+    border-color: #0a8f8f;
+
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary:disabled, .open>.dropdown-toggle.btn-primary {
+
+    background-color: #04bebe;
+    border-color: #0a8f8f;
+
+}
+
+.ip_list th{
+    padding: 5px 6px;
+    font-size: 13px;
+}
+
+.ip_list td{
+    padding: 5px 6px;
+    font-size: 12px;
+}

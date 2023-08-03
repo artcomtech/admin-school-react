@@ -1,0 +1,69 @@
+.card-title{
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.form-control-sm{
+    font-size: 12px;
+}
+
+.form-label{
+    font-size: 12px;
+}
+
+.modal-header{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modal-body{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.form-group{
+    margin-bottom: 4px;
+}
+
+.custom-file-label{
+    font-size: 13px;
+    height: calc(2rem + 2px);
+}
+
+.custom-file{
+    height: calc(2rem + 2px);
+}
+.custom-file-input{
+    height: calc(2rem + 2px);
+
+}
+
+.ck-editor .ck-editor__main .ck-content {
+    min-height: 360px;
+}
+
+.alert{
+    font-size: 12px;
+}
+
+.alert-dismissible .close{
+    padding: 4px 8px;
+}
+
+.rdt_TableHeadRow{
+    background-color: #009999 !important;
+    font-weight: bold;
+    color:#ffffff;
+    
+}
+
+.rdt_TableRow{
+    min-height: 42px !important;
+}
+.rdt_TableCell{
+    border-top: 0px;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-collapse: collapse;
+}

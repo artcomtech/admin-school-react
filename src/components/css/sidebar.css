@@ -1,0 +1,7 @@
+.sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active, .sidebar-light-primary .nav-sidebar>.nav-item>.nav-link.active {
+    background-color: #009999;
+    color: #fff;
+}
+.nav-item{
+    font-size: 13px;
+}
