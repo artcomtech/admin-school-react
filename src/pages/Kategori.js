@@ -1,6 +1,6 @@
 import {React, useState, useEffect} from 'react'
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import DataTable from 'react-data-table-component';
 
@@ -16,6 +16,7 @@ import SideNav from '../components/SideNav'
 const Kategori = () => {
     const [categories, setCategory] = useState([]);
     const [name, setName] = useState('');
+    const [status, setStatus] = useState('');
     const [id, setId] = useState('');
     const [openModal, setOpenModal] = useState(false);
     const [openModalDelete, setOpenModalDelete] = useState(false);
@@ -23,6 +24,9 @@ const Kategori = () => {
     const [openLoaderDelete, setOpenLoaderDelete] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
     const [showAlertDelete, setShowAlertDelete] = useState(false);
+    const [countSelectedRows, setCountSelectedRows] = useState(0);
+    const [listSelectedRows, setListSelectedRows] = useState([]);
+    const [toggledClearRows, setToggleClearRows] = useState(false);
       //state validation
     const [errors, setErrors] = useState([]);
 
@@ -91,7 +95,9 @@ const Kategori = () => {
         const formData = new FormData();
 
         //append data
-        formData.append('name', name);
+        formData.append('category_name', name);
+        formData.append('parent_id', 2);
+        formData.append('status', status);
 
         //send data with API
         await axios.post('http://127.0.0.1:8000/api/category', formData)
@@ -139,6 +145,28 @@ const Kategori = () => {
 
     }
 
+    const deleteActionMultiple = () => {
+        setOpenModalDelete(true);
+        listSelectedRows.map((list)=>
+            axios.delete('http://127.0.0.1:8000/api/category/'+list.id)
+        );
+        setOpenModalDelete(false);
+        setOpenLoaderDelete(false);
+        setShowAlertDelete(true);
+        setToggleClearRows();
+        loadData();
+    }
+
+    const handleChange = ({ selectedRows }) => {
+        setCountSelectedRows(selectedRows.length);
+        setListSelectedRows(selectedRows);
+
+    };
+
+    const handleClearRows = () => {
+        setToggleClearRows(!toggledClearRows);
+    }
+
   return (
     <div>
         <Header/>
@@ -157,7 +185,7 @@ const Kategori = () => {
                     <li className="breadcrumb-item">
                         <a href="#">Dashboard</a>
                     </li>
-                    <li className="breadcrumb-item active">Kategori</li>
+                    <li className="breadcrumb-item active">Kategori Informasi</li>
                     </ol>
                 </div>
                 </div>
@@ -168,21 +196,30 @@ const Kategori = () => {
             <section className="content">
             <div className="container-fluid">
                 <div className="row">
+                    
                 {showAlert?
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Sukses!</strong> Data berhasil Disimpan.
-                    <button type="button" className="close" onClick={()=>setShowAlert(false)} data-dismiss="alert" aria-hidden="true">×</button>
+                <div className='col-md-12'>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Sukses!</strong> Data berhasil Disimpan.
+                        <button type="button" className="close" onClick={()=>setShowAlert(false)} data-dismiss="alert" aria-hidden="true">×</button>
+                    </div>
                 </div>
                 :''}
 
                 {showAlertDelete?
+                <div className='col-md-12'>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <strong>Sukses!</strong> Data berhasil Dihapus.
                     <button type="button" className="close" onClick={()=>setShowAlertDelete(false)} data-dismiss="alert" aria-hidden="true">×</button>
-                </div>
+                </div></div>
                 :''}
                 <div className='col-md-12'>
-                    <button className='btn btn-sm btn-primary float-right mb-2' onClick={(e)=>{setOpenModal(true)}}><i class="fa fa-plus"></i> Tambah</button>
+                    <Link to={'/informasi'}><button className='btn btn-sm btn-warning mb-2 mr-2'><i class="fa fa-newspaper"></i> Informasi</button></Link>
+                    <button className='btn btn-sm btn-primary mb-2' onClick={(e)=>{setOpenModal(true)}}><i class="fa fa-plus"></i> Tambah</button>
+                    {
+                        countSelectedRows>0 &&
+                        <button className='btn btn-danger btn-sm mb-2 ml-2' onClick={deleteActionMultiple}><i className='fa fa-trash'></i> Delete ({countSelectedRows})</button>
+                    }
                 </div>
                 <div className="col-12">
                     
@@ -190,7 +227,7 @@ const Kategori = () => {
                     <div className="card">
                         <div className="card-header">
                             <h3 className="card-title">
-                            List Data Kategori
+                            List Data Kategori Informasi
                             </h3>
                         </div>
                         {/* /.card-header */}
@@ -207,11 +244,14 @@ const Kategori = () => {
                                 
                             </div>
                         <DataTable
-                        columns={columns}
-                        data={categories}
-                        selectableRows
-                        fixedHeader
-                        pagination
+                            columns={columns}
+                            data={categories}
+                            noDataComponent="Data Kategori Tidak Ada"
+                            selectableRows
+                            fixedHeader
+                            pagination
+                            onSelectedRowsChange={handleChange}
+                            clearSelectedRows={toggledClearRows}  
                         >
                         </DataTable>
                         
@@ -230,12 +270,12 @@ const Kategori = () => {
         </div>
         {/* /.content-wrapper */}
         <Footer/>
-        <div className={openModal?'modal d-block':'modal'} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div className={openModal?'fade modal show d-block':'fade modal'} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <form onSubmit={storePost} method='POST'>
             <div className="modal-dialog">
                 <div className="modal-content">
-                    <div className="modal-header">
-                    <h4 className="modal-title" style={{ fontSize:14 }}>Form Tambah Kategori</h4>
+                    <div className="modal-header bg-color-temp">
+                        <h4 className="modal-title" style={{ fontSize:14 }}>Form Tambah Kategori</h4>
                     <button
                         type="button"
                         className="close"
@@ -248,20 +288,28 @@ const Kategori = () => {
                     </div>
                     <div className="modal-body">
                         <div className='form-group'>
-                            <label className='form-label'>Kategori</label>
+                            <label className='form-label'>Nama Kategori</label>
                             <input type="text" className='form-control form-control-sm' onChange={(e)=>setName(e.target.value)} value={name}/>
+                        </div>
+                        <div className='form-group'>
+                            <label className='form-label'>Status</label>
+                            <select className='form-control form-control-sm' onChange={(e)=>setStatus(e.target.value)} value={status}>
+                                <option value="">--Pilih--</option>
+                                <option value="y">Aktif</option>
+                                <option value="n">Tidak Aktif</option>
+                            </select>
                         </div>
                     </div>
                     <div className="modal-footer justify-content-between">
                     <button
                         type="button"
-                        className="btn btn-default btn-xs"
+                        className="btn btn-default btn-sm"
                         data-dismiss="modal"
                         onClick={(e)=>{setOpenModal(false)}}
                     >
-                        Close
+                        <i class="fa fa-times"></i> Close
                     </button>
-                    <button type="submit" className="btn btn-primary btn-xs">
+                    <button type="submit" className="btn btn-primary btn-sm">
                         {openLoader?<i class="fas fa-spinner fa-spin"></i>:<i class="fa fa-save"></i>} Simpan
                     </button>
                     </div>
@@ -275,7 +323,7 @@ const Kategori = () => {
 
 
         {/* Delete Modal */}
-        <div className={openModalDelete?'modal d-block':'modal'} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div className={openModalDelete?'fade modal show d-block':'fade modal'} tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <form onSubmit={deletePost} method='Post'>
             <div className="modal-dialog">
                 <div className="modal-content">
@@ -294,14 +342,14 @@ const Kategori = () => {
                     <div className="modal-body">
                         <p>Yakin ingin menghapus data ini?</p>
                     </div>
-                    <div className="modal-footer justify-content-between">
+                    <div className="modal-footer">
                     <button
                         type="button"
-                        className="btn btn-default btn-xs"
+                        className="btn btn-info btn-xs"
                         data-dismiss="modal"
                         onClick={(e)=>{setOpenModalDelete(false)}}
                     >
-                        Batal
+                        <i className='fas fa-times'></i> Batal
                     </button>
                     <button type="submit" className="btn btn-danger btn-xs">
                         {openLoaderDelete?<i class="fas fa-spinner fa-spin"></i>:<i class="fa fa-trash"></i>} Delete

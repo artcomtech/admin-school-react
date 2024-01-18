@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useCallback} from 'react'
 import './css/Table.css';
 import './css/Custom.css';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ import ModalConfirm from '../components/Modal/ModalConfirm';
 import ModalForm from '../components/Modal/ModalForm';
 
 
-const Profile = () => {
+const PrestasiSiswa = () => {
     const [openModalDelete, setOpenModalDelete] = useState(false);
     const [openLoaderDelete, setOpenLoaderDelete] = useState(false);
     const [countSelectedRows, setCountSelectedRows] = useState(0);
@@ -28,16 +28,25 @@ const Profile = () => {
             selector:row=>row.title
         },
         {
-            name:'Kategori',
-            selector:row=>row.category_name
+            name:'Tgl Posting',
+            selector:row=>row.tgl_posting
         },
         {
             name: 'Opsi',
             button: true,
             width:'100px',
             cell: row => (
-                <div><button type='button' className="btn btn-xs btn-danger mr-1 pl-2 pr-2" onClick={()=>deleteAction(row.id)}><i className="fa fa-trash"></i></button> 
-                <button className="btn btn-xs btn-success pl-2 pr-2" ><i className="fa fa-pen"></i></button></div>
+                <div className="btn-group">
+                    <button type="button" className="btn btn-xs btn-default">Action</button>
+                    <button type="button" className="btn btn-default dropdown-toggle dropdown-icon" data-toggle="dropdown" aria-expanded="false">
+                        <span className="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div className="dropdown-menu" role="menu">
+                        <a className="dropdown-item" href="#">Edit</a>
+                        <div class="dropdown-divider"></div>
+                        <a className="dropdown-item" href="#">Delete</a>
+                    </div>
+                </div>
             ),
         },
     ];
@@ -46,9 +55,60 @@ const Profile = () => {
     const data = [
         {
             "id":'1',
-            "title":'Sejarah Singkat',
-            "category_name":'Profile'
-        }
+            "title":'Prestasi Siswa 1',
+            "tgl_posting":'02 Juli 2023'
+        },
+        {
+            "id":'2',
+            "title":'Prestasi Siswa 2',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'3',
+            "title":'Prestasi Siswa 3',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'4',
+            "title":'Prestasi Siswa 4',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'5',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'6',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'7',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'8',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+        {
+            "id":'9',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'10',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+         {
+            "id":'11',
+            "title":'Prestasi Siswa',
+            "tgl_posting":'02 Juli 2023'
+        },
+        
     ];
 
     const deleteAction = (id) => {
@@ -77,7 +137,6 @@ const Profile = () => {
         setToggleClearRows(!toggledClearRows);
     }
 
-
   return (
     <div>
     <Header/>
@@ -90,14 +149,14 @@ const Profile = () => {
         <div className="container-fluid">
             <div className="row mb-2">
             <div className="col-sm-6">
-                <h3>Profile</h3>
+                <h3>Prestasi Siswa</h3>
             </div>
             <div className="col-sm-6">
                 <ol className="breadcrumb float-sm-right">
                 <li className="breadcrumb-item">
                     <a href="#">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item active">Profile</li>
+                <li className="breadcrumb-item active">Prestasi Siswa</li>
                 </ol>
             </div>
             </div>
@@ -110,7 +169,7 @@ const Profile = () => {
             <div className="container-fluid">
                 <div className="row">
                     <div className="col-12">
-                            <Link to={'/profile/tambah'}><button className='btn btn-sm btn-primary mb-2 mr-2'><i className="fa fa-plus"></i> Tambah</button></Link>
+                            <Link to={'/pengumuman/tambah'}><button className='btn btn-sm btn-primary mb-2 mr-2'><i className="fa fa-plus"></i> Tambah</button></Link>
                             {
                                 countSelectedRows>0 &&
                                 <button className='btn btn-danger btn-sm mb-2' onClick={deleteActionMultiple}><i className='fa fa-trash'></i> Delete ({countSelectedRows})</button>
@@ -121,13 +180,14 @@ const Profile = () => {
                         <div className="card">
                             <div className="card-header">
                                 <h3 className="card-title">
-                                List Profile
+                                List Prestasi Siswa
                                 </h3>
                             </div>
                             {/* /.card-header */}
                             <ModalConfirm closeModal={(e)=>{setOpenModalDelete(false)}} openModalDelete={openModalDelete} actionDelete={()=>deletePost}  openLoaderDelete={openLoaderDelete}>
                                 <p>Yakin ingin menghapus?</p>
                             </ModalConfirm>
+                           
                             <div className="card-body">
                                 <div className='row'>
                                     <div className='col-md-12'>
@@ -143,12 +203,11 @@ const Profile = () => {
                                 <DataTable
                                     columns={columns}
                                     data={data}
-                                    selectableRows
-                                    fixedHeader
                                     pagination
+                                    selectableRows
                                     onSelectedRowsChange={handleChange}
-                                    clearSelectedRows={toggledClearRows}                      
-                                />
+                                    clearSelectedRows={toggledClearRows}                              
+                                    />
 
                             </div>
                             {/* /.card-body */}
@@ -170,4 +229,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default PrestasiSiswa

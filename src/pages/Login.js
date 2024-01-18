@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
+import {  useNavigate } from 'react-router-dom'
+import axios from 'axios';
 
 import LogoLogin from './logo89.png'
 import "../components/css/login.css";
+import { setUserSession } from '../utils/Common';
 
-const Login = () => {
+
+
+const Login = async => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isNotif, setNotif] = useState(false);
+  const [isLogin, setLogin] = useState(false);
 
   const submitLogin = (e) =>{
     e.preventDefault();
-    if(password==='' || password===null){
-      setNotif(true);
-    }
+    setLogin(true);
+    axios.post('http://localhost:8000/api/login', {email, password}).then((res)=>{
+      if(res.data.token){
+        setUserSession(res.data.token, res.data.user);
+        setLogin(false);
+        navigate('/dashboard')
+      }
+    }).catch((err)=>{
+      setNotif(true)
+      setLogin(false)
+    })
   }
   return (
     <div className='login-page'>
@@ -25,7 +40,14 @@ const Login = () => {
             </div>
             <h4 className='text-center'>ADMIN LOGIN</h4>
             <p className="login-box-msg">Silahkan masukkan username dan password</p>
-            {isNotif?<h3>OKE</h3>:''}
+            {isNotif?(
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <strong>Error!</strong> Username & Password tidak cocok.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close" onClick={()=>setNotif(false)}>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            ):''}
             <form onSubmit={submitLogin} method="post">
                 <div className="input-group mb-3">
                 <input type="email" className="form-control form-control-sm" value={email} placeholder="Email" onChange={e=>setEmail(e.target.value)}/>
@@ -46,7 +68,12 @@ const Login = () => {
                 <div className="row">
                 
                 <div className="col-12">
-                    <button type="submit" className="btn btn-info btn-sm btn-block">LOGIN</button>
+                  {
+                    isLogin ? (
+                      <button type="button" className="btn btn-info btn-sm btn-block disabled"><i className="fa fa-spinner fa-spin"></i> PROSES LOGIN</button>
+                    ):(<button type="submit" className="btn btn-info btn-sm btn-block">LOGIN</button>)
+                  }
+                    
                 </div>
                 </div>
             </form>

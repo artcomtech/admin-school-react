@@ -2,6 +2,15 @@
     padding: 10px 0.5rem;
 }
 
+.brand-link{
+    text-align: center;
+    padding: 10px 10px;
+}
+
+a{
+    color: #009999;
+}
+
 h3{
     font-size: 20px;
     margin-bottom: 2px;
@@ -51,4 +60,44 @@ ul .pagination{
 .ip_list td{
     padding: 5px 6px;
     font-size: 12px;
+}
+
+.rdt_TableHeadRow{
+    min-height: 45px !important;
+    /* border: 1px solid #000000; */
+}
+
+.rdt_TableRow{
+    font-size: 12px !important;
+}
+
+.btn-group{
+    height: 32px;
+}
+
+.btn-group .dropdown-menu{
+    padding: 5px;
+}
+
+.btn-group .dropdown-menu a{
+    font-size: 12px;
+}
+
+.btn-group .dropdown-menu a:hover{
+    background-color: #009999;
+    color: #FFFFFF;
+}
+
+.navbar-green{
+    background-color: #009999;
+    color: #FFFFFF !important;
+}
+
+.bg-color-temp{
+    background-color: #009999;
+    color: #FFFFFF !important;
+}
+
+.btn-sm{
+    font-size: 13px;
 }

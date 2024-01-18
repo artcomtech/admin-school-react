@@ -12,8 +12,8 @@
 }
 
 .modal-header{
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
 }
 
 .modal-body{
@@ -39,7 +39,7 @@
 }
 
 .ck-editor .ck-editor__main .ck-content {
-    min-height: 360px;
+    min-height: 420px;
 }
 
 .alert{
